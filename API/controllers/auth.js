@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 import connectDB from "../connect.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
   // CHECK USER IF EXISTS IN DB
@@ -30,6 +33,39 @@ export const register = (req, res) => {
   });
 };
 
-export const login = (req, res) => {};
+export const login = (req, res) => {
+  const checkUser = "SELECT * FROM social_app.users WHERE username = ?";
 
-export const logout = (req, res) => {};
+  connectDB.query(checkUser, [req.body.username], (err, data) => {
+    if (err) return res.status(500).json(err);
+    if (data.length === 0) return res.status(404).json("User not found!");
+
+    const checkPassword = bcrypt.compareSync(
+      req.body.password,
+      data[0].password
+    );
+    if (!checkPassword)
+      return res.status(400).json("Incorrect username or password!");
+
+    const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET);
+
+    const { password, ...userDetails } = data[0];
+
+    res
+      .cookie("assessToken", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json(userDetails);
+  });
+};
+
+export const logout = (req, res) => {
+  res
+    .clearCookie("accessToken", {
+      secure: true,
+      sameSite: "none",
+    })
+    .status(200)
+    .json("Logout Successfully!");
+};
