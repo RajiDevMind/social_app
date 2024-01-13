@@ -9,7 +9,10 @@ export const register = (req, res) => {
   const checkUser = "SELECT * FROM social_app.users WHERE username = ?";
   connectDB.query(checkUser, [req.body.username], (err, data) => {
     if (err) return res.status(500).json(err);
-    if (data.length) return res.status(409).json("User already exists!");
+    if (data.length)
+      return res
+        .status(409)
+        .json("User already exists! Kindly login with your details?");
 
     // HASH PASSWORD
     const salt = bcrypt.genSaltSync(10);
@@ -17,7 +20,7 @@ export const register = (req, res) => {
 
     // CREATE NEW USER
     const createUser =
-      "INSERT INTO users (`username`,`email`,`password`,`name`) VALUE (?)";
+      "INSERT INTO users (`username`,`email`,`password`,`name`) VALUES (?, ?, ?, ?)";
 
     const userDetails = [
       req.body.username,
@@ -25,7 +28,7 @@ export const register = (req, res) => {
       hashedPassword,
       req.body.name,
     ];
-    connectDB.query(createUser, [userDetails], (err, data) => {
+    connectDB.query(createUser, userDetails, (err, data) => {
       if (err)
         return res.status(500).json({ err: "Error occur, Try again!!!" });
       return res.status(200).json("User created successfully!");

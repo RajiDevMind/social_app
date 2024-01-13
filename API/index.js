@@ -14,7 +14,14 @@ const port = process.env.PORT || 8800;
 // MIDDLEWAREs
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("Hello, World");

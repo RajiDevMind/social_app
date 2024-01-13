@@ -12,7 +12,6 @@
     background-color: white;
     border-radius: 10px;
 
-
     .left {
       flex: 1;
       background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
@@ -30,12 +29,11 @@
         font-size: 6rem;
         line-height: 100px;
       }
-      
-     
+
       span {
         font-size: 14px;
       }
-      
+
       button {
         width: 50%;
         padding: 10px;
@@ -45,6 +43,11 @@
         font-weight: bold;
         cursor: pointer;
       }
+    }
+    .error {
+      color: red;
+      font-size: 1.2rem;
+      text-shadow: 0 0px 5px #000000;
     }
 
     .right {
@@ -56,20 +59,20 @@
       justify-content: center;
 
       h1 {
-      color: #555;
+        color: #555;
       }
-      
+
       form {
         display: flex;
         flex-direction: column;
         gap: 30px;
-        
+
         input {
-        border: none;
-        border-bottom: 1px solid lightgray;
-        padding: 20px 10px;
+          border: none;
+          border-bottom: 1px solid lightgray;
+          padding: 20px 10px;
         }
-        
+
         button {
           width: 50%;
           padding: 10px;
@@ -83,10 +86,9 @@
     }
   }
 }
-@media screen and (max-width:600px){
+@media screen and (max-width: 600px) {
   .card {
     max-width: 90%;
     flex-wrap: wrap;
   }
-  
 }
