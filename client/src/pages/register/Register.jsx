@@ -50,24 +50,33 @@ const Register = () => {
               placeholder="Username"
               name="username"
               onChange={handleChange}
+              required
+              minLength={5}
             />
             <input
               type="email"
               placeholder="Email"
               name="email"
               onChange={handleChange}
+              required
+              minLength={5}
             />
             <input
               type="password"
               placeholder="Password"
               name="password"
               onChange={handleChange}
+              required
+              minLength={5}
+              maxLength={15}
             />
             <input
               type="text"
               placeholder="Name"
               name="name"
               onChange={handleChange}
+              required
+              minLength={5}
             />
             <p className="error">{error && error}</p>
 
