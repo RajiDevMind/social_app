@@ -64,6 +64,7 @@ const Share = () => {
             />
           </div>
           <div className="right">
+            {/* preview img before upload */}
             {file && (
               <img
                 className="file"
