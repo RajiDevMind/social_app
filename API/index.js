@@ -36,5 +36,3 @@ app.use("/api/auth", authsRoutes);
 app.listen(port, () => {
   console.log(`Server listening on port http://localhost:${port}...`);
 });
-
-// git clone single-branch -b "react-social-ui" https://github.com/safak/youtube2022.git

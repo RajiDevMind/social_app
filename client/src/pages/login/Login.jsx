@@ -23,7 +23,6 @@ const Login = () => {
       const response = login(inputs);
       if (response) {
         setRedirect(true);
-        console.log("good");
       } else {
         console.log("not so good");
       }
