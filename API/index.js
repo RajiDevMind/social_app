@@ -8,6 +8,7 @@ import postsRoutes from "./routes/posts.js";
 import likesRoutes from "./routes/likes.js";
 import commentsRoutes from "./routes/comments.js";
 import authsRoutes from "./routes/auth.js";
+import multer from "multer";
 
 const port = process.env.PORT || 8800;
 
@@ -23,8 +24,21 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Hello, World");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../client/public/upload");
+  },
+  filename: function (req, file, cb) {
+    // set uploads img to a unique name
+    cb(null, Date.now() + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  res.status(200).json(file.filename);
 });
 
 app.use("/api/users", usersRoutes);
