@@ -1,7 +1,8 @@
 import Post from "../post/Post";
 import "./posts.scss";
 import { useQuery } from "react-query";
-import { makeRequest } from "../../axios";
+import { makeRequest } from "../../axios.js";
+import { Navigate } from "react-router-dom";
 
 const Posts = () => {
   const { isLoading, error, data } = useQuery("posts", () =>
@@ -9,13 +10,16 @@ const Posts = () => {
       return res.data;
     })
   );
+
   return (
     <div className="posts">
-      {error
-        ? "Hold on! Something went wrong."
-        : isLoading
-        ? "Loading..."
-        : data?.map((post) => <Post post={post} key={post.id} />)}
+      {error ? (
+        <Navigate to={"/login"} />
+      ) : isLoading ? (
+        "Loading..."
+      ) : (
+        data?.map((post) => <Post post={post} key={post.id} />)
+      )}
     </div>
   );
 };
