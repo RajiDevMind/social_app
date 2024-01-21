@@ -4,9 +4,9 @@ import { useQuery } from "react-query";
 import { makeRequest } from "../../axios.js";
 import { Navigate } from "react-router-dom";
 
-const Posts = () => {
+const Posts = ({ userId }) => {
   const { isLoading, error, data } = useQuery("posts", () =>
-    makeRequest.get("/posts").then((res) => {
+    makeRequest.get("/posts?userId=" + userId).then((res) => {
       return res.data;
     })
   );

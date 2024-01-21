@@ -16,21 +16,21 @@ const Post = ({ post }) => {
   const { currentUser } = useContext(AuthContext);
   const [commentOpen, setCommentOpen] = useState(false);
 
-  const postId = JSON.stringify(post.id);
+  const postId = post.id;
 
   const { isLoading, error, data } = useQuery(["likes", postId], () =>
     makeRequest.get("/likes?postId=" + postId).then((res) => {
       return res.data;
     })
   );
-  // console.log(data);
+
   const queryClient = useQueryClient();
 
   // Mutations
   const mutation = useMutation(
     (liked) => {
       // check if liked or not
-      if (liked) return makeRequest.delete("/likes?postId" + postId);
+      if (liked) return makeRequest.delete("/likes?postId=" + postId);
       return makeRequest.post("/likes", { postId: postId });
     },
     {
@@ -82,7 +82,7 @@ const Post = ({ post }) => {
             ) : (
               <FavoriteBorderOutlinedIcon onClick={handleLike} />
             )}
-            Likes
+            {data?.length} Likes
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />

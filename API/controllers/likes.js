@@ -1,4 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
 import connectDB from "../connect.js";
+import jwt from "jsonwebtoken";
 
 export const getLikes = (req, res) => {
   const createUserPost = "SELECT * FROM likes WHERE postId = ?";
@@ -17,11 +20,10 @@ export const addLike = (req, res) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     if (err) return res.status(403).json("Invalid token");
 
-    const createUserPost =
-      "INSERT INTO likes (`userId`, `postId`) VALUES (?, ?)";
+    const q = "INSERT INTO likes (`userId`, `postId`) VALUES (?, ?)";
 
-    const userComments = [userInfo.id, req.body.postId];
-    connectDB.query(createUserPost, userComments, (err, data) => {
+    const userLikes = [userInfo.id, req.body.postId];
+    connectDB.query(q, userLikes, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.status(200).json("Yay! liked Successfully!");
     });
@@ -36,15 +38,11 @@ export const deleteLike = (req, res) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     if (err) return res.status(403).json("Invalid token");
 
-    const createUserPost = "DELETE FROM likes WHERE userId = ? AND  postId = ?";
+    const sql = "DELETE FROM likes WHERE (userId = ?) AND (postId = ?)";
 
-    connectDB.query(
-      createUserPost,
-      [userInfo.id, req.query.postId],
-      (err, data) => {
-        if (err) return res.status(500).json(err);
-        return res.status(200).json("Ohh! Unlike");
-      }
-    );
+    connectDB.query(sql, [userInfo.id, req.query.postId], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json("Ohh! Unlike");
+    });
   });
 };

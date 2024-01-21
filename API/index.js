@@ -7,6 +7,7 @@ import usersRoutes from "./routes/users.js";
 import postsRoutes from "./routes/posts.js";
 import likesRoutes from "./routes/likes.js";
 import commentsRoutes from "./routes/comments.js";
+import relationshipsRoutes from "./routes/relationships.js";
 import authsRoutes from "./routes/auth.js";
 import multer from "multer";
 
@@ -45,6 +46,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/likes", likesRoutes);
 app.use("/api/comments", commentsRoutes);
+app.use("/api/relationships", relationshipsRoutes);
 app.use("/api/auth", authsRoutes);
 
 app.listen(port, () => {
