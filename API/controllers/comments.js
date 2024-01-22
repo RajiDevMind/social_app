@@ -30,7 +30,7 @@ export const addComment = (req, res) => {
       userInfo.id,
       req.body.postId,
     ];
-    connectDB.query(createUserPost, [userComments], (err, data) => {
+    connectDB.query(createUserPost, userComments, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.status(200).json("Yay! Comment was added Successfully!");
     });

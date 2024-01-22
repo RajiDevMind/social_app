@@ -13,9 +13,11 @@ import { useQuery, useQueryClient, useMutation } from "react-query";
 import { makeRequest } from "../../axios.js";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext.js";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import Update from "../../components/update/Update.jsx";
 
 const Profile = () => {
+  const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
   const userId = parseInt(useLocation().pathname.split("/")[2]);
@@ -57,19 +59,21 @@ const Profile = () => {
     mutation.mutate(relationshipData?.includes(currentUser.id));
   };
   return (
-    <>
-      {isLoading ? (
+    <div className="profile">
+      {error ? (
+        "Something went wrong, reload page!"
+      ) : isLoading ? (
         "Loading din"
       ) : (
-        <div className="profile">
+        <>
           <div className="images">
             <img
-              src={data?.coverPic}
+              src={"/upload/" + data?.coverPic}
               alt={data?.name + " cover picture here"}
               className="cover"
             />
             <img
-              src={data?.profilePic}
+              src={"/upload/" + data?.profilePic}
               alt={data?.name}
               className="profilePic"
             />
@@ -108,7 +112,7 @@ const Profile = () => {
                 {loadFollowers ? (
                   "Loading"
                 ) : userId === currentUser.id ? (
-                  <button>update</button>
+                  <button onClick={(e) => setOpenUpdate(true)}>update</button>
                 ) : (
                   <button onClick={handleFollow}>
                     {relationshipData.includes(currentUser.id)
@@ -124,9 +128,11 @@ const Profile = () => {
             </div>
             <Posts userId={userId} />
           </div>
-        </div>
+        </>
       )}
-    </>
+      {/* conditionally updating users profile */}
+      {openUpdate && <Update setOpenUpdate={setOpenUpdate} userData={data} />}
+    </div>
   );
 };
 
